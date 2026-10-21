@@ -123,7 +123,14 @@
       nameEl.classList.add("neu");
     }
 
-    document.getElementById("generiere").addEventListener("click", generiere);
+    const knopf = document.getElementById("generiere");
+    knopf.addEventListener("click", generiere);
+    // Läertaste macht au en neue Name (de Knopf sälber reagiert scho druf)
+    document.addEventListener("keydown", (e) => {
+      if (e.code !== "Space" || e.repeat || e.target === knopf) return;
+      e.preventDefault();
+      generiere();
+    });
     generiere();
   </script>
 </body>
