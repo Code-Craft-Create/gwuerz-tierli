@@ -54,10 +54,10 @@
       font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: bold;
       margin: 0;
-      word-break: break-word;
-      hyphens: auto;
       min-height: 1.3em;
     }
+    /* Gwürz und Tierli bliibed zäme; bricht nume nachem Strich um */
+    #name span { display: inline-block; overflow-wrap: anywhere; }
     #name.neu { animation: hopse 0.4s ease-out; }
     @keyframes hopse {
       0% { transform: scale(0.8); opacity: 0; }
@@ -110,11 +110,15 @@
       do {
         g = zuefällig(GWUERZ);
         t = zuefällig(TIERLI);
-        name = g + t.toLowerCase();
+        name = g + "-" + t;
       } while (name === letschte);
       letschte = name;
 
-      nameEl.textContent = name;
+      const gwürzEl = document.createElement("span");
+      const tierliEl = document.createElement("span");
+      gwürzEl.textContent = g + "-";
+      tierliEl.textContent = t;
+      nameEl.replaceChildren(gwürzEl, tierliEl);
       zämesetzigEl.textContent = g + " + " + t;
       nameEl.classList.remove("neu");
       void nameEl.offsetWidth;
