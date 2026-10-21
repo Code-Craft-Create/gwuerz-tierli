@@ -80,8 +80,6 @@
     button:hover { filter: brightness(1.05); }
     button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
     button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
-    .optione { margin-top: 24px; color: var(--muted); font-size: 0.95rem; }
-    .optione input { accent-color: var(--accent); }
     footer { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
   </style>
 </head>
@@ -93,43 +91,25 @@
     <p id="name" aria-live="polite">&nbsp;</p>
     <p id="zämesetzig">&nbsp;</p>
     <button id="generiere" type="button">Nomal eis! ✨</button>
-    <div class="optione">
-      <label>
-        <input type="checkbox" id="vorschlaege">
-        Claudes Vorschläg mitnäh (no nöd prüeft)
-      </label>
-    </div>
   </main>
 
   <footer>Zimt, Honig &amp; es Tierli – fertig isch dä Kosename.</footer>
 
   <script src="woerter.js"></script>
-  <script src="vorschlaege.js"></script>
   <script>
     const nameEl = document.getElementById("name");
     const zämesetzigEl = document.getElementById("zämesetzig");
-    const vorschlaegeEl = document.getElementById("vorschlaege");
     let letschte = "";
 
     function zuefällig(lischte) {
       return lischte[Math.floor(Math.random() * lischte.length)];
     }
 
-    function lischte() {
-      if (!vorschlaegeEl.checked) return { gwürz: GWUERZ, tierli: TIERLI };
-      const korrigiert = (w) => KORREKTURE[w] || w;
-      return {
-        gwürz: GWUERZ.map(korrigiert).concat(GWUERZ_NEU),
-        tierli: TIERLI.map(korrigiert).concat(TIERLI_NEU),
-      };
-    }
-
     function generiere() {
-      const { gwürz, tierli } = lischte();
       let g, t, name;
       do {
-        g = zuefällig(gwürz);
-        t = zuefällig(tierli);
+        g = zuefällig(GWUERZ);
+        t = zuefällig(TIERLI);
         name = g + t.toLowerCase();
       } while (name === letschte);
       letschte = name;

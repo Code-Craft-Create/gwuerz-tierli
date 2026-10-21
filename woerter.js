@@ -1,7 +1,6 @@
-// Davids Lischte – genau so wie vo ihm vorgschlage.
 const GWUERZ = [
   "Zimt",
-  "Kardamon",
+  "Kardamom",
   "Honig",
   "Zucker",
   "Pfäffer",
@@ -10,6 +9,14 @@ const GWUERZ = [
   "Änis",
   "Kurkuma",
   "Negeli",
+  "Vanille",
+  "Ingwer",
+  "Stärnanis",
+  "Karamell",
+  "Schoggi",
+  "Mandle",
+  "Marzipan",
+  "Haselnuss",
 ];
 
 const TIERLI = [
@@ -26,4 +33,12 @@ const TIERLI = [
   "Äffli",
   "Löi",
   "Seelöi",
+  "Igeli",
+  "Häsli",
+  "Büsi",
+  "Füchsli",
+  "Säuli",
+  "Äntli",
+  "Pinguinli",
+  "Wäschbärli",
 ];
