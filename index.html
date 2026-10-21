@@ -53,7 +53,7 @@
     #name {
       font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: bold;
-      margin: 0;
+      margin: 0 0 32px;
       min-height: 1.3em;
     }
     /* Gwürz und Tierli bliibed zäme; bricht nume nachem Strich um */
@@ -64,7 +64,6 @@
       70% { transform: scale(1.05); opacity: 1; }
       100% { transform: scale(1); }
     }
-    #zämesetzig { color: var(--muted); margin: 8px 0 32px; min-height: 1.2em; }
     button {
       font: inherit;
       font-size: 1.2rem;
@@ -89,7 +88,6 @@
 
   <main class="charte">
     <p id="name" aria-live="polite">&nbsp;</p>
-    <p id="zämesetzig">&nbsp;</p>
     <button id="generiere" type="button">Nomal eis! ✨</button>
   </main>
 
@@ -98,34 +96,41 @@
   <script src="woerter.js"></script>
   <script>
     const nameEl = document.getElementById("name");
-    const zämesetzigEl = document.getElementById("zämesetzig");
-    let letschte = "";
+    // Gwürz und Tierli vo de letschte zwei Näme chömed nöd grad wieder
+    const SPERRI = 2;
+    const letschtiGwürz = [];
+    const letschtiTierli = [];
 
-    function zuefällig(lischte) {
-      return lischte[Math.floor(Math.random() * lischte.length)];
+    function zuefällig(lischte, letschti) {
+      const frei = lischte.filter((w) => !letschti.includes(w));
+      const wort = frei[Math.floor(Math.random() * frei.length)];
+      letschti.push(wort);
+      if (letschti.length > SPERRI) letschti.shift();
+      return wort;
     }
 
     function generiere() {
-      let g, t, name;
-      do {
-        g = zuefällig(GWUERZ);
-        t = zuefällig(TIERLI);
-        name = g + "-" + t;
-      } while (name === letschte);
-      letschte = name;
+      const g = zuefällig(GWUERZ, letschtiGwürz);
+      const t = zuefällig(TIERLI, letschtiTierli);
 
       const gwürzEl = document.createElement("span");
       const tierliEl = document.createElement("span");
       gwürzEl.textContent = g + "-";
       tierliEl.textContent = t;
       nameEl.replaceChildren(gwürzEl, tierliEl);
-      zämesetzigEl.textContent = g + " + " + t;
       nameEl.classList.remove("neu");
       void nameEl.offsetWidth;
       nameEl.classList.add("neu");
     }
 
-    document.getElementById("generiere").addEventListener("click", generiere);
+    const knopf = document.getElementById("generiere");
+    knopf.addEventListener("click", generiere);
+    // Läertaste macht au en neue Name (de Knopf sälber reagiert scho druf)
+    document.addEventListener("keydown", (e) => {
+      if (e.code !== "Space" || e.repeat || e.target === knopf) return;
+      e.preventDefault();
+      generiere();
+    });
     generiere();
   </script>
 </body>
