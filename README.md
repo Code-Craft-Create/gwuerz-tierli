@@ -4,6 +4,7 @@ Es chliises Siitli, wo süessi Kosenäme generiert: es Gwürz + es Tierli, z.B. 
 
 - `index.html` – d Siite
 - `woerter.js` – d Wörterlischte (Gwürz und Tierli)
+- `bilder.js` – es SVG-Bildli für jedes Gwürz und Tierli (wär es neus Wort ufnimmt, zeichnet au es Bildli)
 
 Lauft als statischi Siite uf GitHub Pages (Branch `main`, Ordner `/`).
 

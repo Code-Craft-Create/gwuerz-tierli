@@ -79,6 +79,38 @@
     button:hover { filter: brightness(1.05); }
     button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
     button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+    /* Bildli vom Gwürz und vom Tierli (nume wenn s Häkli gsetzt isch) */
+    #bildli {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: -8px 0 16px;
+    }
+    #bildli[hidden] { display: none; }
+    #bildli .rahme {
+      width: clamp(96px, 30vw, 132px);
+      aspect-ratio: 1;
+      padding: 12px;
+      border-radius: 50%;
+      background: #fff1dd;
+      box-shadow: inset 0 0 0 3px rgba(194, 102, 45, 0.15);
+    }
+    #bildli svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    #bildli .plus { font-size: 1.6rem; color: var(--muted); }
+    #bildli.neu .rahme { animation: hopse 0.4s ease-out; }
+    #bildli.neu .rahme + .plus + .rahme { animation-delay: 0.08s; animation-fill-mode: backwards; }
+    .schalter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .schalter input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
     footer { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
     .version { margin-top: 12px; color: var(--muted); font-size: 0.7rem; opacity: 0.6; font-family: ui-monospace, monospace; }
   </style>
@@ -88,17 +120,30 @@
   <p class="untertitel">Dä süessi Kosename-Generator</p>
 
   <main class="charte">
+    <div id="bildli" hidden>
+      <div class="rahme" id="gwuerzBild"></div>
+      <span class="plus" aria-hidden="true">+</span>
+      <div class="rahme" id="tierliBild"></div>
+    </div>
     <p id="name" aria-live="polite">&nbsp;</p>
     <button id="generiere" type="button">Nomal eis! ✨</button>
+    <div>
+      <label class="schalter"><input type="checkbox" id="bildliZeige" autocomplete="off"> Bildli zeige</label>
+    </div>
   </main>
 
   <footer>Zimt, Honig &amp; es Tierli – fertig isch dä Kosename.</footer>
   <!-- Bi jedem Release ufezelle -->
-  <div class="version">v0.4.0</div>
+  <div class="version">v0.5.0</div>
 
   <script src="woerter.js"></script>
+  <script src="bilder.js"></script>
   <script>
     const nameEl = document.getElementById("name");
+    const bildliEl = document.getElementById("bildli");
+    const gwürzBildEl = document.getElementById("gwuerzBild");
+    const tierliBildEl = document.getElementById("tierliBild");
+    const bildliZeige = document.getElementById("bildliZeige");
     // Gwürz und Tierli vo de letschte zwei Näme chömed nöd grad wieder
     const SPERRI = 2;
     const letschtiGwürz = [];
@@ -121,16 +166,24 @@
       gwürzEl.textContent = g + "-";
       tierliEl.textContent = t;
       nameEl.replaceChildren(gwürzEl, tierliEl);
-      nameEl.classList.remove("neu");
-      void nameEl.offsetWidth;
-      nameEl.classList.add("neu");
+      gwürzBildEl.innerHTML = bild(g);
+      tierliBildEl.innerHTML = bild(t);
+      for (const el of [nameEl, bildliEl]) {
+        el.classList.remove("neu");
+        void el.offsetWidth;
+        el.classList.add("neu");
+      }
     }
+
+    bildliZeige.addEventListener("change", () => {
+      bildliEl.hidden = !bildliZeige.checked;
+    });
 
     const knopf = document.getElementById("generiere");
     knopf.addEventListener("click", generiere);
     // Läertaste macht au en neue Name (de Knopf sälber reagiert scho druf)
     document.addEventListener("keydown", (e) => {
-      if (e.code !== "Space" || e.repeat || e.target === knopf) return;
+      if (e.code !== "Space" || e.repeat || e.target === knopf || e.target === bildliZeige) return;
       e.preventDefault();
       generiere();
     });
