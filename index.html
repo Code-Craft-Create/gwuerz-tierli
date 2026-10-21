@@ -53,7 +53,7 @@
     #name {
       font-size: clamp(2rem, 8vw, 3.2rem);
       font-weight: bold;
-      margin: 0;
+      margin: 0 0 32px;
       min-height: 1.3em;
     }
     /* Gwürz und Tierli bliibed zäme; bricht nume nachem Strich um */
@@ -64,7 +64,6 @@
       70% { transform: scale(1.05); opacity: 1; }
       100% { transform: scale(1); }
     }
-    #zämesetzig { color: var(--muted); margin: 8px 0 32px; min-height: 1.2em; }
     button {
       font: inherit;
       font-size: 1.2rem;
@@ -89,7 +88,6 @@
 
   <main class="charte">
     <p id="name" aria-live="polite">&nbsp;</p>
-    <p id="zämesetzig">&nbsp;</p>
     <button id="generiere" type="button">Nomal eis! ✨</button>
   </main>
 
@@ -98,7 +96,6 @@
   <script src="woerter.js"></script>
   <script>
     const nameEl = document.getElementById("name");
-    const zämesetzigEl = document.getElementById("zämesetzig");
     let letschte = "";
 
     function zuefällig(lischte) {
@@ -119,7 +116,6 @@
       gwürzEl.textContent = g + "-";
       tierliEl.textContent = t;
       nameEl.replaceChildren(gwürzEl, tierliEl);
-      zämesetzigEl.textContent = g + " + " + t;
       nameEl.classList.remove("neu");
       void nameEl.offsetWidth;
       nameEl.classList.add("neu");
