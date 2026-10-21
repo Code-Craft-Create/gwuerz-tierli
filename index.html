@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="gsw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gwürz Tierli</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐌</text></svg>">
+  <style>
+    :root {
+      --bg: #fbf3e8;
+      --card: #fffaf3;
+      --text: #4a2f1d;
+      --muted: #8a6a52;
+      --accent: #c2662d;
+      --accent-dark: #9c4e1f;
+      --shadow: 0 10px 30px rgba(120, 70, 30, 0.15);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #241912;
+        --card: #33241a;
+        --text: #f6e7d6;
+        --muted: #c9a98c;
+        --accent: #e08a4f;
+        --accent-dark: #c2662d;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Georgia", "Times New Roman", serif;
+      text-align: center;
+    }
+    h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 0 0 4px; }
+    .untertitel { color: var(--muted); margin: 0 0 32px; font-style: italic; }
+    .charte {
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 40px 24px;
+      width: 100%;
+      max-width: 560px;
+    }
+    #name {
+      font-size: clamp(2rem, 8vw, 3.2rem);
+      font-weight: bold;
+      margin: 0;
+      word-break: break-word;
+      hyphens: auto;
+      min-height: 1.3em;
+    }
+    #name.neu { animation: hopse 0.4s ease-out; }
+    @keyframes hopse {
+      0% { transform: scale(0.8); opacity: 0; }
+      70% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    #zämesetzig { color: var(--muted); margin: 8px 0 32px; min-height: 1.2em; }
+    button {
+      font: inherit;
+      font-size: 1.2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 32px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--accent-dark);
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    button:hover { filter: brightness(1.05); }
+    button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
+    button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+    .optione { margin-top: 24px; color: var(--muted); font-size: 0.95rem; }
+    .optione input { accent-color: var(--accent); }
+    footer { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Gwürz Tierli</h1>
+  <p class="untertitel">Dä süessi Kosename-Generator</p>
+
+  <main class="charte">
+    <p id="name" aria-live="polite">&nbsp;</p>
+    <p id="zämesetzig">&nbsp;</p>
+    <button id="generiere" type="button">Nomal eis! ✨</button>
+    <div class="optione">
+      <label>
+        <input type="checkbox" id="vorschlaege">
+        Claudes Vorschläg mitnäh (no nöd prüeft)
+      </label>
+    </div>
+  </main>
+
+  <footer>Zimt, Honig &amp; es Tierli – fertig isch dä Kosename.</footer>
+
+  <script src="woerter.js"></script>
+  <script src="vorschlaege.js"></script>
+  <script>
+    const nameEl = document.getElementById("name");
+    const zämesetzigEl = document.getElementById("zämesetzig");
+    const vorschlaegeEl = document.getElementById("vorschlaege");
+    let letschte = "";
+
+    function zuefällig(lischte) {
+      return lischte[Math.floor(Math.random() * lischte.length)];
+    }
+
+    function lischte() {
+      if (!vorschlaegeEl.checked) return { gwürz: GWUERZ, tierli: TIERLI };
+      const korrigiert = (w) => KORREKTURE[w] || w;
+      return {
+        gwürz: GWUERZ.map(korrigiert).concat(GWUERZ_NEU),
+        tierli: TIERLI.map(korrigiert).concat(TIERLI_NEU),
+      };
+    }
+
+    function generiere() {
+      const { gwürz, tierli } = lischte();
+      let g, t, name;
+      do {
+        g = zuefällig(gwürz);
+        t = zuefällig(tierli);
+        name = g + t.toLowerCase();
+      } while (name === letschte);
+      letschte = name;
+
+      nameEl.textContent = name;
+      zämesetzigEl.textContent = g + " + " + t;
+      nameEl.classList.remove("neu");
+      void nameEl.offsetWidth;
+      nameEl.classList.add("neu");
+    }
+
+    document.getElementById("generiere").addEventListener("click", generiere);
+    generiere();
+  </script>
+</body>
+</html>
